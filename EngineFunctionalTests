@@ -1,0 +1,94 @@
+from nose.tools import *
+from GameOfLife.engine import Engine
+
+def test_GenerateWithOscillatorSeed():
+
+rows = 10
+cols = 10
+input = [[0 for row in range(rows)] for col in range(cols)]
+
+input[2][1] = 1
+input[2][2] = 1
+input[2][3] = 1
+
+expected = [[0 for row in range(rows)] for col in range(cols)]
+expected[1][2] = 1
+expected[2][2] = 1
+expected[3][2] = 1
+
+engine = Engine(rows, cols)
+engine.seed(input)
+actual = engine.generate()
+
+print 'INPUT ----------------------------------------------'
+print(formatPrintOut(input))
+print ''
+print 'EXPECTED ----------------------------------------------'
+print(formatPrintOut(expected))
+print ''
+print 'ACTUAL ----------------------------------------------'
+print(formatPrintOut(actual))
+
+assert actual == expected
+
+# engine.seed(actual)
+regenerated = engine.generate()
+
+print ''
+print 'REGENERATED ----------------------------------------------'
+print(formatPrintOut(regenerated))
+
+assert regenerated == input
+
+
+def test_GenerateWithPulsarSeed():
+
+rows = 17
+cols = 17
+input = [[0 for row in range(rows)] for col in range(cols)]
+
+input = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+         [0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+         [0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+         [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
+         [0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+         [0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+         [0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+         ]
+
+engine = Engine(rows, cols)
+engine.seed(input)
+iteration1 = engine.generate()
+iteration2 = engine.generate()
+iteration3 = engine.generate()
+
+
+print 'INPUT ----------------------------------------------'
+print(formatPrintOut(input))
+print ''
+print 'ITERATION 1 ----------------------------------------------'
+print(formatPrintOut(iteration1))
+print ''
+print 'ITERATION 2 ----------------------------------------------'
+print(formatPrintOut(iteration2))
+print ''
+print 'ITERATION 3 ----------------------------------------------'
+print(formatPrintOut(iteration3))
+print ''
+assert input == iteration3
+
+
+def formatPrintOut(grid):
+return '\n'.join([''.join(['{:4}'.format('.' if item == 0 else 'X')
+                           for item in row])
+                  for row in grid])
